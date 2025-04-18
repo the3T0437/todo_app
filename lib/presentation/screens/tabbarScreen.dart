@@ -39,6 +39,7 @@ class _TabbarScreenState extends State<TabbarScreen> {
 
 class TabBarExample extends StatelessWidget {
   TaskRepository repository;
+  final searchController = TextEditingController();
   TabBarExample({super.key, required this.repository});
 
   @override
@@ -63,18 +64,21 @@ class TabBarExample extends StatelessWidget {
               child: TaskScreen(
                 title: "test",
                 displayTasks: (taskState) => taskState.newTasks,
+                searchController: searchController,
               ),
             ),
             Center(
               child: TaskScreen(
                 title: "test",
                 displayTasks: (taskState) => taskState.processingTasks,
+                searchController: searchController,
               ),
             ),
             Center(
               child: TaskScreen(
                 title: "test",
                 displayTasks: (taskState) => taskState.completely,
+                searchController: searchController,
               ),
             ),
           ],

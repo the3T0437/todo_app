@@ -8,8 +8,13 @@ import "package:todoapp/presentation/bloc/task_state.dart";
 
 class TaskScreen extends StatelessWidget {
   final List<Task> Function(TaskState) displayTasks;
-  TaskScreen({super.key, required this.title, required this.displayTasks});
-  final searchController = TextEditingController();
+  const TaskScreen({
+    super.key,
+    required this.title,
+    required this.displayTasks,
+    required this.searchController,
+  });
+  final TextEditingController searchController;
 
   final String title;
 
@@ -54,7 +59,7 @@ class TaskScreen extends StatelessWidget {
               child: ListView.builder(
                 itemCount: tasks.length,
                 itemBuilder: (context, index) {
-                  return showATask(tasks[index], state.tasks, context);
+                  return showATask(tasks[index], context);
                 },
               ),
             ),
@@ -64,7 +69,7 @@ class TaskScreen extends StatelessWidget {
     );
   }
 
-  Widget showATask(Task task, List<Task> tasks, BuildContext context) {
+  Widget showATask(Task task, BuildContext context) {
     return Card(
       elevation: 10,
       child: Row(
