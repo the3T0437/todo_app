@@ -27,25 +27,40 @@ class TaskScreen extends StatelessWidget {
   Widget body() {
     return BlocBuilder<TaskCubit, TaskState>(
       builder: (context, state) {
+        var searchBar = Padding(
+          padding: EdgeInsets.all(10),
+          child: SearchBar(
+            backgroundColor: WidgetStateColor.fromMap({
+              WidgetState.focused: Colors.white,
+              WidgetState.pressed: Colors.white,
+              WidgetState.any: Colors.white,
+            }),
+            hintText: "Search",
+            controller: searchController,
+            onChanged:
+                (value) => context.read<TaskCubit>().setSearchString(
+                  searchController.text,
+                ),
+          ),
+        );
+
         var tasks = displayTasks(state);
-        List<TaskCard> taskCards = [];
+        List<Widget> taskCards = [];
+        taskCards.add(searchBar);
         for (Task task in tasks) {
           taskCards.add(TaskCard(task: task));
         }
-
         return Column(
           children: [
-            Padding(
-              padding: EdgeInsets.all(10),
-              child: SearchBar(
-                controller: searchController,
-                onChanged:
-                    (value) => context.read<TaskCubit>().setSearchString(
-                      searchController.text,
-                    ),
+            Expanded(
+              child: Container(
+                clipBehavior: Clip.antiAlias,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                ),
+                child: ListView(children: taskCards),
               ),
             ),
-            Expanded(child: ListView(children: taskCards)),
           ],
         );
       },

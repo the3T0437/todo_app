@@ -61,6 +61,13 @@ class _DialogTaskState extends State<DialogTask> {
   @override
   Widget build(BuildContext context) {
     final key = GlobalKey<FormState>();
+    var isVisiblityDeadline = deadLine != null;
+    var deadLineStr = "";
+    if (isVisiblityDeadline) {
+      var deadline = deadLine!;
+      deadLineStr =
+          "${deadline.day.toString().padLeft(2, '0')}/${deadline.month.toString().padLeft(2, '0')}/${deadline.year}";
+    }
 
     var children = [
       TextFormField(
@@ -82,6 +89,8 @@ class _DialogTaskState extends State<DialogTask> {
           border: OutlineInputBorder(),
           labelText: "description",
         ),
+        maxLines: 5,
+        minLines: 1,
       ),
       SizedBox(height: 10),
       dropdownMenuTaskPriority(),
@@ -90,7 +99,7 @@ class _DialogTaskState extends State<DialogTask> {
       SizedBox(height: 10),
       colorDropDown!,
       SizedBox(height: 10),
-      Text("deadline: ${deadLine.toString()}"),
+      Visibility(visible: isVisiblityDeadline, child: Text(deadLineStr)),
       SizedBox(height: 10),
       ElevatedButton.icon(
         onPressed: () async {
@@ -137,18 +146,7 @@ class _DialogTaskState extends State<DialogTask> {
               widget.onSubmit(newTask);
             }
 
-            // context.read<TaskCubit>().addTask(
-            //   Task(
-            //     title: titleControler.text,
-            //     description: descriptionController.text,
-            //     priority: priority,
-            //     status: status,
-            //     color: colorDropDown.color.color,
-            //     deadLineDate: deadLine,
-            //     createDate: DateTime.now(),
-            //     editedDate: DateTime.now(),
-            //   ),
-            // );
+            Navigator.of(context).pop();
           }
         },
         child: Text(widget.submitButtonText),
@@ -156,6 +154,7 @@ class _DialogTaskState extends State<DialogTask> {
     ];
 
     return Dialog(
+      backgroundColor: Colors.white,
       child: Form(
         key: key,
         child: Padding(

@@ -9,6 +9,12 @@ final taskStatusMenuItems =
     TaskStatus.values.map((status) {
       return DropdownMenuItem<TaskStatus>(
         value: status,
-        child: Text(status.name),
+        child: Text(taskStatusName[status] ?? "Unknown"),
       );
     }).toList();
+
+final taskStatusName = {
+  TaskStatus.newTask: "New",
+  TaskStatus.processing: "Processing",
+  TaskStatus.compeletely: "Completed",
+};

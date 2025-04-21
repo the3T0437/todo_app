@@ -26,31 +26,28 @@ class _TabbarScreenState extends State<TabbarScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(useMaterial3: true),
-      home: TabBarExample(repository: repository),
-    );
+    return TabbarBody(repository: repository);
   }
 }
 
-class TabBarExample extends StatelessWidget {
+class TabbarBody extends StatelessWidget {
   TaskRepository repository;
   final searchController = TextEditingController();
-  TabBarExample({super.key, required this.repository});
+  TabbarBody({super.key, required this.repository});
 
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      initialIndex: 1,
+      initialIndex: 0,
       length: 3,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('TabBar Sample'),
+          title: const Text('Todo App'),
           bottom: const TabBar(
             tabs: <Widget>[
-              Tab(icon: Icon(Icons.cloud_outlined)),
-              Tab(icon: Icon(Icons.beach_access_sharp)),
-              Tab(icon: Icon(Icons.brightness_5_sharp)),
+              Tab(text: "New", icon: Icon(Icons.content_copy_rounded)),
+              Tab(text: "Processing", icon: Icon(Icons.av_timer)),
+              Tab(text: "Done", icon: Icon(Icons.check_circle_outline)),
             ],
           ),
         ),

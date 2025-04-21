@@ -42,7 +42,9 @@ class LocalTaskStoreage extends TaskStoreage {
   @override
   Future<void> removeTask(Task removeTask) async {
     var tasks = await getTasks();
-    var index = tasks.indexOf(removeTask);
+    var index = tasks.indexWhere(
+      (task) => task.toJson() == removeTask.toJson(),
+    );
     tasks.removeAt(index);
 
     await writeTasks(tasks);

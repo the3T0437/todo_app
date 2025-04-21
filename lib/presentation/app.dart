@@ -18,7 +18,28 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.amber),
+        tabBarTheme: const TabBarTheme(
+          labelColor: Colors.black,
+          unselectedLabelColor: Colors.white,
+          indicatorColor: Colors.white,
+        ),
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.amber,
+          foregroundColor: Colors.white,
+          titleTextStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+        cardTheme: const CardTheme(
+          color: Colors.white,
+          shadowColor: Colors.black,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+          ),
+        ),
+        floatingActionButtonTheme: const FloatingActionButtonThemeData(
+          backgroundColor: Colors.amber,
+          foregroundColor: Colors.white,
+        ),
       ),
       home: MultiBlocProvider(
         providers: [
