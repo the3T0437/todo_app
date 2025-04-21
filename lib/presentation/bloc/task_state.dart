@@ -8,7 +8,13 @@ class TaskState {
     var newTasks =
         tasks.where((task) => task.status == TaskStatus.newTask).toList();
     var searchTasks =
-        newTasks.where((task) => task.title.contains(searchStr ?? "")).toList();
+        newTasks
+            .where(
+              (task) =>
+                  task.title.contains(searchStr ?? "") ||
+                  task.description.contains(searchStr ?? ""),
+            )
+            .toList();
 
     searchTasks.sort(
       (task1, task2) => task2.priority.index.compareTo(task1.priority.index),
@@ -23,7 +29,11 @@ class TaskState {
 
     var searchTasks =
         processingTasks
-            .where((task) => task.title.contains(searchStr ?? ""))
+            .where(
+              (task) =>
+                  task.title.contains(searchStr ?? "") ||
+                  task.description.contains(searchStr ?? ""),
+            )
             .toList();
 
     searchTasks.sort(
@@ -38,7 +48,13 @@ class TaskState {
         tasks.where((task) => task.status == TaskStatus.compeletely).toList();
 
     var searchTasks =
-        newTasks.where((task) => task.title.contains(searchStr ?? "")).toList();
+        newTasks
+            .where(
+              (task) =>
+                  task.title.contains(searchStr ?? "") ||
+                  task.description.contains(searchStr ?? ""),
+            )
+            .toList();
 
     searchTasks.sort(
       (task1, task2) => task2.priority.index.compareTo(task1.priority.index),

@@ -33,6 +33,7 @@ class Task {
   TaskStatus status;
   TaskPriority priority;
   Color color;
+  String colorName;
   DateTime? createDate;
   DateTime? deadLineDate;
   DateTime? editedDate;
@@ -41,7 +42,8 @@ class Task {
     required this.title,
     this.description = "",
     this.priority = TaskPriority.low,
-    this.color = Colors.transparent,
+    this.color = Colors.blue,
+    this.colorName = "blue",
     this.deadLineDate,
     this.status = TaskStatus.newTask,
     DateTime? createDate,
@@ -53,7 +55,8 @@ class Task {
     return <String, dynamic>{
       'title': title,
       'description': description,
-      'color': color.value,
+      'color': color.toARGB32(),
+      'colorName': colorName,
       'status': status.name,
       'priority': priority.name,
       'createDate': createDate?.millisecondsSinceEpoch,
@@ -67,6 +70,7 @@ class Task {
       title: map['title'] as String,
       description: map['description'] as String,
       color: Color(map['color'] as int),
+      colorName: map['colorName'] ?? "Green" as String,
       createDate:
           map['createDate'] != null
               ? DateTime.fromMillisecondsSinceEpoch(map['createDate'] as int)

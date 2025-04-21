@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 
 enum ColorLabel {
@@ -15,6 +16,10 @@ enum ColorLabel {
 class ColorDropDown extends StatefulWidget {
   ColorLabel color = ColorLabel.blue;
 
+  ColorDropDown({Key? key, ColorLabel? color})
+    : color = color ?? ColorLabel.blue,
+      super(key: key);
+
   @override
   State<StatefulWidget> createState() => _ColorDropDownState();
 }
@@ -23,11 +28,7 @@ class _ColorDropDownState extends State<ColorDropDown> {
   @override
   Widget build(BuildContext context) {
     return DropdownMenu<ColorLabel>(
-      initialSelection: ColorLabel.green,
-      // requestFocusOnTap is enabled/disabled by platforms when it is null.
-      // On mobile platforms, this is false by default. Setting this to true will
-      // trigger focus request on the text field and virtual keyboard will appear
-      // afterward. On desktop platforms however, this defaults to true.
+      initialSelection: widget.color,
       requestFocusOnTap: true,
       label: const Text('Color'),
       onSelected: (ColorLabel? color) {
