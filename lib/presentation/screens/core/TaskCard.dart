@@ -34,19 +34,6 @@ class _TaskCardState extends State<TaskCard> {
                   submitButtonText: "Update",
                 ),
           ),
-      /*
-          () => showDialog(
-            context: context,
-            builder:
-                (contextBuilder) => BlocProvider.value(
-                  value: context.read<TaskCubit>(),
-                  child: DialogTask(
-                    task: widget.task,
-                    onSubmit: (task) => context.read<TaskCubit>().writeTasks(),
-                  ),
-                ),
-          ),
-          */
     );
   }
 
@@ -59,12 +46,16 @@ class _TaskCardState extends State<TaskCard> {
   }
 
   Column taskDetail() {
+    var isVisiblityDeadline = widget.task.deadLineDate != null;
     return Column(
       children: [
         Text(widget.task.title),
         Text(widget.task.description),
         DropdownMenuTaskStatus(),
-        Text(widget.task.deadLineDate.toString()),
+        Visibility(
+          child: Text(widget.task.deadLineDate.toString()),
+          visible: isVisiblityDeadline,
+        ),
       ],
     );
   }
