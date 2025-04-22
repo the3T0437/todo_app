@@ -18,3 +18,38 @@ final taskStatusName = {
   TaskStatus.processing: "Processing",
   TaskStatus.compeletely: "Completed",
 };
+
+Widget DropdownMenuTaskStatus(
+  void Function(TaskStatus) onSelected,
+  TaskStatus initStatus,
+) {
+  return PopupMenuButton<TaskStatus>(
+    onSelected: onSelected,
+    itemBuilder:
+        (context) => [
+          PopupMenuItem<TaskStatus>(
+            value: TaskStatus.newTask,
+            child: Text('New'),
+          ),
+          PopupMenuItem<TaskStatus>(
+            value: TaskStatus.processing,
+            child: Text('In Process'),
+          ),
+          PopupMenuItem<TaskStatus>(
+            value: TaskStatus.compeletely,
+            child: Text('Completed'),
+          ),
+        ],
+    child: Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: const Color.fromARGB(150, 59, 63, 65),
+      ),
+      padding: EdgeInsets.all(10),
+      child: Text(
+        taskStatusName[initStatus] ?? "Unknown",
+        style: TextStyle(color: Colors.white),
+      ),
+    ),
+  );
+}

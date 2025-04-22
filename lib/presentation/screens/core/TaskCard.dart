@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todoapp/domain/models/task.dart';
 import 'package:todoapp/presentation/bloc/task_cubit.dart';
 import 'package:todoapp/presentation/screens/core/dialog_Task.dart';
+import 'package:todoapp/presentation/screens/core/dropdown_task_priority.dart';
 import 'package:todoapp/presentation/screens/core/dropdown_task_status.dart';
 
 class TaskCard extends StatefulWidget {
@@ -14,6 +15,8 @@ class TaskCard extends StatefulWidget {
 }
 
 class _TaskCardState extends State<TaskCard> {
+  bool isShowDesc = false;
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -33,6 +36,7 @@ class _TaskCardState extends State<TaskCard> {
           clipBehavior: Clip.antiAlias,
           child: IntrinsicHeight(
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Expanded(
                   child: Container(
@@ -47,6 +51,10 @@ class _TaskCardState extends State<TaskCard> {
         ),
       ),
       onTap:
+          () => setState(() {
+            isShowDesc = !isShowDesc;
+          }),
+      onDoubleTap:
           () => showDialog(
             context: context,
             builder:
@@ -78,49 +86,74 @@ class _TaskCardState extends State<TaskCard> {
 
     var isVisibleDesc =
         widget.task.description.isNotEmpty &&
-        widget.task.description.trim() != "";
+        widget.task.description.trim() != "" &&
+        isShowDesc;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Text(
-          widget.task.title,
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ),
-        Visibility(
-          visible: isVisibleDesc,
-          child: Text(
-            widget.task.description,
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w400,
-              color: Colors.grey,
-              overflow: TextOverflow.ellipsis,
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(bottom: 5),
+            child: Text(
+              widget.task.title,
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
-            maxLines: 2,
           ),
-        ),
-        DropdownMenuTaskStatus(),
-        Visibility(child: Text(deadLineStr), visible: isVisibleDeadline),
-      ],
-    );
-  }
-
-  Widget DropdownMenuTaskStatus() {
-    return DropdownButton<TaskStatus>(
-      value: widget.task.status,
-      onChanged: (newValue) {
-        if (newValue == null) return;
-        widget.task.status = newValue;
-
-        context.read<TaskCubit>().writeTasks();
-      },
-      items: taskStatusMenuItems,
+          Visibility(
+            visible: isVisibleDesc,
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 5),
+              child: Text(
+                widget.task.description,
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.grey,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                maxLines: 2,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 5),
+            child: Row(
+              children: [
+                DropdownMenuTaskStatus((TaskStatus status) {
+                  widget.task.status = status;
+                  context.read<TaskCubit>().writeTasks();
+                }, widget.task.status),
+                SizedBox(width: 10),
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: const Color.fromARGB(150, 59, 63, 65),
+                  ),
+                  padding: EdgeInsets.all(10),
+                  child: Text(
+                    taskPriorityName[widget.task.priority] ?? "Unknown",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Visibility(
+            visible: isVisibleDeadline,
+            child: Chip(
+              avatar: Icon(Icons.calendar_month),
+              label: Text(deadLineStr),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

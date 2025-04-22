@@ -21,16 +21,20 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.amber),
         tabBarTheme: const TabBarTheme(
           labelColor: Colors.black,
-          unselectedLabelColor: Colors.white,
+          unselectedLabelColor: Colors.black,
           indicatorColor: Colors.white,
+          dividerColor: Colors.transparent,
         ),
         appBarTheme: const AppBarTheme(
-          backgroundColor: Colors.amber,
-          foregroundColor: Colors.white,
-          titleTextStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          backgroundColor: Colors.transparent,
+          foregroundColor: Colors.amber,
+          titleTextStyle: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.amber,
+          ),
         ),
         cardTheme: const CardTheme(
-          color: Colors.white,
           shadowColor: Colors.black,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(10)),

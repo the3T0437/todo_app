@@ -12,17 +12,23 @@ class _TestScreenState extends State<TestScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Test Screen')),
-      body: IntrinsicHeight(
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Column(
-              children: [Container(color: Colors.blue, width: 10, height: 20)],
-            ),
-            Container(color: Colors.red, width: 10),
-
-            Column(children: [Text("hello")]),
-          ],
+      body: PopupMenuButton<String>(
+        onSelected: (String value) {
+          print('Selected: $value');
+        },
+        itemBuilder:
+            (BuildContext context) => <PopupMenuEntry<String>>[
+              PopupMenuItem<String>(value: 'Option 1', child: Text('Option 1')),
+              PopupMenuItem<String>(value: 'Option 2', child: Text('Option 2')),
+              PopupMenuItem<String>(value: 'Option 3', child: Text('Option 3')),
+            ],
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: Colors.amber,
+          ),
+          padding: EdgeInsets.all(10),
+          child: Text("Show Dropdown"),
         ),
       ),
     );

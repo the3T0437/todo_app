@@ -17,3 +17,38 @@ final taskPriorityName = {
   TaskPriority.medium: "Medium",
   TaskPriority.high: "High",
 };
+
+Widget DropdownMenuTaskPriority(
+  void Function(TaskPriority) onSelected,
+  TaskPriority initPriority,
+) {
+  return PopupMenuButton<TaskPriority>(
+    onSelected: onSelected,
+    itemBuilder:
+        (context) => [
+          PopupMenuItem<TaskPriority>(
+            value: TaskPriority.low,
+            child: Text('Low'),
+          ),
+          PopupMenuItem<TaskPriority>(
+            value: TaskPriority.medium,
+            child: Text('Medium'),
+          ),
+          PopupMenuItem<TaskPriority>(
+            value: TaskPriority.high,
+            child: Text('High'),
+          ),
+        ],
+    child: Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: const Color.fromARGB(150, 59, 63, 65),
+      ),
+      padding: EdgeInsets.all(10),
+      child: Text(
+        taskPriorityName[initPriority] ?? "Unknown",
+        style: TextStyle(color: Colors.white),
+      ),
+    ),
+  );
+}

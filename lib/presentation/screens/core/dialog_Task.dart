@@ -1,4 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
@@ -34,7 +33,7 @@ class _DialogTaskState extends State<DialogTask> {
   var descriptionController = TextEditingController();
   var priority = TaskPriority.low;
   var status = TaskStatus.newTask;
-  ColorDropDown? colorDropDown;
+  ColorTable? colorTable;
   DateTime? deadLine = null;
 
   @override
@@ -51,10 +50,10 @@ class _DialogTaskState extends State<DialogTask> {
         (element) => element.name == widget.task!.colorName,
         orElse: () => ColorLabel.blue,
       );
-      colorDropDown = ColorDropDown(color: colorLabel);
+      colorTable = ColorTable(color: colorLabel);
       deadLine = widget.task!.deadLineDate;
     } else {
-      colorDropDown = ColorDropDown();
+      colorTable = ColorTable();
     }
   }
 
@@ -63,11 +62,12 @@ class _DialogTaskState extends State<DialogTask> {
     final key = GlobalKey<FormState>();
     var isVisiblityDeadline = deadLine != null;
     var deadLineStr = "";
-    if (isVisiblityDeadline) {
+    if (deadLine != null) {
       var deadline = deadLine!;
       deadLineStr =
           "${deadline.day.toString().padLeft(2, '0')}/${deadline.month.toString().padLeft(2, '0')}/${deadline.year}";
-    }
+    } else
+      deadLineStr = "pick deadline";
 
     var children = [
       TextFormField(
@@ -93,13 +93,22 @@ class _DialogTaskState extends State<DialogTask> {
         minLines: 1,
       ),
       SizedBox(height: 10),
-      dropdownMenuTaskPriority(),
+      DropdownMenuTaskStatus(
+        (taskStatus) => setState(() {
+          status = taskStatus;
+        }),
+        status,
+      ),
       SizedBox(height: 10),
-      dropdownMenuTaskStatus(),
+      DropdownMenuTaskPriority(
+        (priority) => setState(() {
+          this.priority = priority;
+        }),
+        priority,
+      ),
       SizedBox(height: 10),
-      colorDropDown!,
-      SizedBox(height: 10),
-      Visibility(visible: isVisiblityDeadline, child: Text(deadLineStr)),
+      Text("Color"),
+      colorTable!,
       SizedBox(height: 10),
       ElevatedButton.icon(
         onPressed: () async {
@@ -113,7 +122,7 @@ class _DialogTaskState extends State<DialogTask> {
           setState(() => deadLine = pickDate);
         },
         icon: Icon(Icons.calendar_today),
-        label: Text("pick deadline"),
+        label: Text(deadLineStr),
       ),
       SizedBox(height: 10),
       ElevatedButton(
@@ -124,8 +133,8 @@ class _DialogTaskState extends State<DialogTask> {
               widget.task!.description = descriptionController.text;
               widget.task!.priority = priority;
               widget.task!.status = status;
-              widget.task!.color = colorDropDown!.color.color;
-              widget.task!.colorName = colorDropDown!.color.name;
+              widget.task!.color = colorTable!.color.color;
+              widget.task!.colorName = colorTable!.color.name;
               widget.task!.deadLineDate = deadLine;
               widget.task!.editedDate = DateTime.now();
 
@@ -136,8 +145,8 @@ class _DialogTaskState extends State<DialogTask> {
                 description: descriptionController.text,
                 priority: priority,
                 status: status,
-                color: colorDropDown!.color.color,
-                colorName: colorDropDown!.color.name,
+                color: colorTable!.color.color,
+                colorName: colorTable!.color.name,
                 deadLineDate: deadLine,
                 createDate: DateTime.now(),
                 editedDate: DateTime.now(),
@@ -169,25 +178,25 @@ class _DialogTaskState extends State<DialogTask> {
     );
   }
 
-  Widget dropdownMenuTaskPriority() {
-    return DropdownButton<TaskPriority>(
-      value: priority,
-      onChanged: (newValue) {
-        if (newValue == null) return;
-        setState(() => priority = newValue);
-      },
-      items: taskPriorityMenuItems,
-    );
-  }
+  // Widget dropdownMenuTaskPriority() {
+  //   return DropdownButton<TaskPriority>(
+  //     value: priority,
+  //     onChanged: (newValue) {
+  //       if (newValue == null) return;
+  //       setState(() => priority = newValue);
+  //     },
+  //     items: taskPriorityMenuItems,
+  //   );
+  // }
 
-  Widget dropdownMenuTaskStatus() {
-    return DropdownButton<TaskStatus>(
-      value: status,
-      onChanged: (newValue) {
-        if (newValue == null) return;
-        setState(() => status = newValue);
-      },
-      items: taskStatusMenuItems,
-    );
-  }
+  // Widget dropdownMenuTaskStatus() {
+  //   return DropdownButton<TaskStatus>(
+  //     value: status,
+  //     onChanged: (newValue) {
+  //       if (newValue == null) return;
+  //       setState(() => status = newValue);
+  //     },
+  //     items: taskStatusMenuItems,
+  //   );
+  // }
 }

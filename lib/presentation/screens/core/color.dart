@@ -13,18 +13,19 @@ enum ColorLabel {
   final Color color;
 }
 
-class ColorDropDown extends StatefulWidget {
+class ColorTable extends StatefulWidget {
   ColorLabel color = ColorLabel.blue;
 
-  ColorDropDown({Key? key, ColorLabel? color})
+  ColorTable({Key? key, ColorLabel? color})
     : color = color ?? ColorLabel.blue,
       super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _ColorDropDownState();
+  State<StatefulWidget> createState() => _ColorTableState();
 }
 
-class _ColorDropDownState extends State<ColorDropDown> {
+class _ColorTableState extends State<ColorTable> {
+  /*
   @override
   Widget build(BuildContext context) {
     return DropdownMenu<ColorLabel>(
@@ -47,6 +48,49 @@ class _ColorDropDownState extends State<ColorDropDown> {
               style: MenuItemButton.styleFrom(foregroundColor: color.color),
             );
           }).toList(),
+    );
+  }
+  */
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children:
+          ColorLabel.values.map<Widget>((ColorLabel color) {
+            return GestureDetector(
+              onTap: () {
+                setState(() {
+                  widget.color = color;
+                });
+              },
+              child: colorToPick(color, widget.color),
+            );
+          }).toList(),
+    );
+  }
+
+  Widget colorToPick(ColorLabel color, ColorLabel selectedColor) {
+    return Container(
+      width: 30,
+      height: 30,
+      decoration: BoxDecoration(
+        color:
+            color.label == selectedColor.label
+                ? const Color.fromARGB(20, 59, 63, 65)
+                : const Color.fromARGB(0, 0, 0, 0),
+        borderRadius: BorderRadius.circular(30),
+      ),
+      child: SizedBox.shrink(
+        child: Container(
+          margin: const EdgeInsets.all(5),
+          width: 20,
+          height: 20,
+          decoration: BoxDecoration(
+            color: color.color,
+            borderRadius: BorderRadius.circular(20),
+          ),
+        ),
+      ),
     );
   }
 }

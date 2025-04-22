@@ -43,10 +43,16 @@ class TabbarBody extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Todo App'),
+          centerTitle: true,
           bottom: const TabBar(
+            indicatorSize: TabBarIndicatorSize.tab,
+            indicator: BoxDecoration(
+              color: Colors.amber,
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+            ),
             tabs: <Widget>[
               Tab(text: "New", icon: Icon(Icons.content_copy_rounded)),
-              Tab(text: "Processing", icon: Icon(Icons.av_timer)),
+              Tab(text: "In Process", icon: Icon(Icons.av_timer)),
               Tab(text: "Done", icon: Icon(Icons.check_circle_outline)),
             ],
           ),
@@ -90,7 +96,7 @@ class TabbarBody extends StatelessWidget {
                   ),
             );
           },
-          tooltip: 'Increment',
+          tooltip: 'Add new task',
           child: const Icon(Icons.add),
         ),
       ),
