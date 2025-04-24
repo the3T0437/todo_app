@@ -7,17 +7,24 @@ import "package:todoapp/presentation/bloc/task_cubit.dart";
 import "package:todoapp/presentation/bloc/task_state.dart";
 import "package:todoapp/presentation/screens/core/TaskCard.dart";
 
-class TaskScreen extends StatelessWidget {
+class TaskScreen extends StatefulWidget {
   final List<Task> Function(TaskState) displayTasks;
-  const TaskScreen({
+
+  TaskScreen({
     super.key,
-    required this.title,
     required this.displayTasks,
     required this.searchController,
   });
   final TextEditingController searchController;
 
-  final String title;
+  @override
+  State<TaskScreen> createState() => _TaskScreenState();
+}
+
+class _TaskScreenState extends State<TaskScreen> {
+  final FocusNode searchFocus = FocusNode();
+
+  ScrollController scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -27,29 +34,8 @@ class TaskScreen extends StatelessWidget {
   Widget body() {
     return BlocBuilder<TaskCubit, TaskState>(
       builder: (context, state) {
-        var searchBar = Padding(
-          padding: EdgeInsets.all(10),
-          child: SearchBar(
-            backgroundColor: WidgetStateColor.fromMap({
-              WidgetState.focused: Colors.white,
-              WidgetState.pressed: Colors.white,
-              WidgetState.any: Colors.white,
-            }),
-            hintText: "Search",
-            controller: searchController,
-            onChanged:
-                (value) => context.read<TaskCubit>().setSearchString(
-                  searchController.text,
-                ),
-          ),
-        );
+        List<Widget> taskCards = getWidgetsInScreen(state, context);
 
-        var tasks = displayTasks(state);
-        List<Widget> taskCards = [];
-        taskCards.add(searchBar);
-        for (Task task in tasks) {
-          taskCards.add(TaskCard(task: task));
-        }
         return Column(
           children: [
             Expanded(
@@ -65,5 +51,56 @@ class TaskScreen extends StatelessWidget {
         );
       },
     );
+  }
+
+  List<Widget> getWidgetsInScreen(TaskState state, BuildContext context) {
+    Widget searchBar = getSearchBar(context);
+
+    List<Widget> taskCards = [];
+    var tasks = widget.displayTasks(state);
+    for (Task task in tasks) {
+      taskCards.add(TaskCard(task: task));
+    }
+
+    taskCards.insert(0, searchBar);
+
+    return taskCards;
+  }
+
+  Widget getSearchBar(BuildContext context) {
+    var searchBar = Padding(
+      //padding: EdgeInsets.only(left: 24, right: 24, top: 16),
+      padding: EdgeInsets.only(left: 24, right: 24, top: 5, bottom: 10),
+      child: SearchBar(
+        focusNode: searchFocus,
+        elevation: WidgetStateProperty.fromMap({
+          WidgetState.focused: 3,
+          WidgetState.pressed: 3,
+          WidgetState.any: 3,
+        }),
+        backgroundColor: WidgetStateColor.fromMap({
+          WidgetState.focused: Colors.white,
+          WidgetState.pressed: Colors.white,
+          WidgetState.any: Colors.white,
+        }),
+        hintText: "Search",
+        leading: const Icon(Icons.search),
+        controller: widget.searchController,
+        shape: WidgetStateOutlinedBorder.fromMap({
+          WidgetState.any: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(8)),
+            side: BorderSide(width: 0.2, color: Colors.grey),
+          ),
+        }),
+        hintStyle: WidgetStateProperty.fromMap({
+          WidgetState.any: TextStyle(fontSize: 14, color: Colors.grey),
+        }),
+        onChanged:
+            (value) => context.read<TaskCubit>().setSearchString(
+              widget.searchController.text,
+            ),
+      ),
+    );
+    return searchBar;
   }
 }

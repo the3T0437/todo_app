@@ -12,18 +12,33 @@ final taskPriorityMenuItems =
       );
     }).toList();
 
+// final TaskPriorityColors ={
+//   TaskPriority.low: Color.fromARGB(255, 0, 255, 0),
+//   TaskPriority.medium: Color.fromARGB(255, 255, 255, 0),
+//   TaskPriority.high: Color.fromARGB(255, 255, 0, 0),
+// }
+
+final TaskPriorityColors = {
+  TaskPriority.low: const Color.fromRGBO(64, 196, 255, 1),
+  TaskPriority.medium: const Color.fromRGBO(255, 215, 64, 1),
+  TaskPriority.high: const Color.fromRGBO(255, 64, 129, 1),
+};
+
 final taskPriorityName = {
   TaskPriority.low: "Low",
-  TaskPriority.medium: "Medium",
+  TaskPriority.medium: "Med",
   TaskPriority.high: "High",
 };
 
-Widget DropdownMenuTaskPriority(
-  void Function(TaskPriority) onSelected,
-  TaskPriority initPriority,
-) {
+Widget DropdownMenuTaskPriority({
+  required void Function(TaskPriority) onSelected,
+  required TaskPriority initPriority,
+  void Function()? onOpened,
+}) {
   return PopupMenuButton<TaskPriority>(
     onSelected: onSelected,
+    color: Colors.white,
+    onOpened: onOpened,
     itemBuilder:
         (context) => [
           PopupMenuItem<TaskPriority>(
@@ -41,13 +56,14 @@ Widget DropdownMenuTaskPriority(
         ],
     child: Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: const Color.fromARGB(150, 59, 63, 65),
+        borderRadius: BorderRadius.circular(8),
+        color:
+            TaskPriorityColors[initPriority] ?? Color.fromARGB(150, 59, 63, 65),
       ),
       padding: EdgeInsets.all(10),
       child: Text(
         taskPriorityName[initPriority] ?? "Unknown",
-        style: TextStyle(color: Colors.white),
+        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
       ),
     ),
   );

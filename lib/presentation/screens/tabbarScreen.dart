@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todoapp/data/repository/task_repository.dart';
 import 'package:todoapp/presentation/bloc/task_cubit.dart';
@@ -38,22 +39,29 @@ class TabbarBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      initialIndex: 0,
+      initialIndex: 1,
       length: 3,
       child: Scaffold(
         appBar: AppBar(
+          systemOverlayStyle: SystemUiOverlayStyle(
+            statusBarBrightness: Brightness.light,
+            statusBarIconBrightness: Brightness.dark,
+          ),
           title: const Text('Todo App'),
           centerTitle: true,
           bottom: const TabBar(
+            labelColor: Colors.white,
+            padding: EdgeInsets.only(bottom: 10, right: 16, left: 16),
+            splashBorderRadius: BorderRadius.all(Radius.circular(8)),
             indicatorSize: TabBarIndicatorSize.tab,
             indicator: BoxDecoration(
-              color: Colors.amber,
-              borderRadius: BorderRadius.all(Radius.circular(10)),
+              color: Color.fromARGB(255, 255, 193, 108),
+              borderRadius: BorderRadius.all(Radius.circular(8)),
             ),
             tabs: <Widget>[
               Tab(text: "New", icon: Icon(Icons.content_copy_rounded)),
-              Tab(text: "In Process", icon: Icon(Icons.av_timer)),
-              Tab(text: "Done", icon: Icon(Icons.check_circle_outline)),
+              Tab(text: "Processing", icon: Icon(Icons.av_timer)),
+              Tab(text: "Completed", icon: Icon(Icons.check_circle_outline)),
             ],
           ),
         ),
@@ -61,21 +69,18 @@ class TabbarBody extends StatelessWidget {
           children: <Widget>[
             Center(
               child: TaskScreen(
-                title: "test",
                 displayTasks: (taskState) => taskState.newTasks,
                 searchController: searchController,
               ),
             ),
             Center(
               child: TaskScreen(
-                title: "test",
                 displayTasks: (taskState) => taskState.processingTasks,
                 searchController: searchController,
               ),
             ),
             Center(
               child: TaskScreen(
-                title: "test",
                 displayTasks: (taskState) => taskState.completely,
                 searchController: searchController,
               ),

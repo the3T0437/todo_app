@@ -12,10 +12,6 @@ class TaskCubit extends Cubit<TaskState> {
     repository.getTasks().then((tasks) => emit(state.copyWith(tasks: tasks)));
   }
 
-  void getTasksToDisplay() {
-    repository.getTasks().then((tasks) => emit(state.copyWith(tasks: tasks)));
-  }
-
   void removeTask(Task task) {
     repository.removeTask(task).then((tasks) => getTasks());
   }

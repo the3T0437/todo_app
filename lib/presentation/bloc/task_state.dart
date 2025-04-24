@@ -5,14 +5,15 @@ class TaskState {
   List<Task> tasks;
   String? searchStr;
   List<Task> get newTasks {
+    searchStr = searchStr?.toLowerCase();
     var newTasks =
         tasks.where((task) => task.status == TaskStatus.newTask).toList();
     var searchTasks =
         newTasks
             .where(
               (task) =>
-                  task.title.contains(searchStr ?? "") ||
-                  task.description.contains(searchStr ?? ""),
+                  task.title.toLowerCase().contains(searchStr ?? "") ||
+                  task.description.toLowerCase().contains(searchStr ?? ""),
             )
             .toList();
 
@@ -24,6 +25,7 @@ class TaskState {
   }
 
   List<Task> get processingTasks {
+    searchStr = searchStr?.toLowerCase();
     var processingTasks =
         tasks.where((task) => task.status == TaskStatus.processing).toList();
 
@@ -31,8 +33,8 @@ class TaskState {
         processingTasks
             .where(
               (task) =>
-                  task.title.contains(searchStr ?? "") ||
-                  task.description.contains(searchStr ?? ""),
+                  task.title.toLowerCase().contains(searchStr ?? "") ||
+                  task.description.toLowerCase().contains(searchStr ?? ""),
             )
             .toList();
 
@@ -44,6 +46,7 @@ class TaskState {
   }
 
   List<Task> get completely {
+    searchStr = searchStr?.toLowerCase();
     var newTasks =
         tasks.where((task) => task.status == TaskStatus.compeletely).toList();
 
@@ -51,8 +54,8 @@ class TaskState {
         newTasks
             .where(
               (task) =>
-                  task.title.contains(searchStr ?? "") ||
-                  task.description.contains(searchStr ?? ""),
+                  task.title.toLowerCase().contains(searchStr ?? "") ||
+                  task.description.toLowerCase().contains(searchStr ?? ""),
             )
             .toList();
 

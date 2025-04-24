@@ -17,8 +17,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.amber),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Color.fromARGB(255, 255, 193, 108),
+        ),
         tabBarTheme: const TabBarTheme(
           labelColor: Colors.black,
           unselectedLabelColor: Colors.black,
@@ -27,11 +30,11 @@ class MyApp extends StatelessWidget {
         ),
         appBarTheme: const AppBarTheme(
           backgroundColor: Colors.transparent,
-          foregroundColor: Colors.amber,
+          foregroundColor: Color.fromARGB(255, 255, 193, 108),
           titleTextStyle: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
-            color: Colors.amber,
+            color: Color.fromARGB(255, 255, 193, 108),
           ),
         ),
         cardTheme: const CardTheme(
@@ -41,7 +44,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
         floatingActionButtonTheme: const FloatingActionButtonThemeData(
-          backgroundColor: Colors.amber,
+          backgroundColor: Color.fromARGB(255, 255, 193, 108),
           foregroundColor: Colors.white,
         ),
       ),

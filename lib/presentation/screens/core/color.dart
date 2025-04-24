@@ -25,39 +25,13 @@ class ColorTable extends StatefulWidget {
 }
 
 class _ColorTableState extends State<ColorTable> {
-  /*
-  @override
-  Widget build(BuildContext context) {
-    return DropdownMenu<ColorLabel>(
-      initialSelection: widget.color,
-      requestFocusOnTap: true,
-      label: const Text('Color'),
-      onSelected: (ColorLabel? color) {
-        setState(() {
-          if (color != null) widget.color = color;
-        });
-      },
-      dropdownMenuEntries:
-          ColorLabel.values.map<DropdownMenuEntry<ColorLabel>>((
-            ColorLabel color,
-          ) {
-            return DropdownMenuEntry<ColorLabel>(
-              value: color,
-              label: color.label,
-              enabled: color.label != 'Grey',
-              style: MenuItemButton.styleFrom(foregroundColor: color.color),
-            );
-          }).toList(),
-    );
-  }
-  */
-
   @override
   Widget build(BuildContext context) {
     return Row(
       children:
           ColorLabel.values.map<Widget>((ColorLabel color) {
             return GestureDetector(
+              behavior: HitTestBehavior.translucent,
               onTap: () {
                 setState(() {
                   widget.color = color;
@@ -71,8 +45,9 @@ class _ColorTableState extends State<ColorTable> {
 
   Widget colorToPick(ColorLabel color, ColorLabel selectedColor) {
     return Container(
-      width: 30,
-      height: 30,
+      margin: const EdgeInsets.all(4),
+      width: 32,
+      height: 32,
       decoration: BoxDecoration(
         color:
             color.label == selectedColor.label
@@ -82,9 +57,7 @@ class _ColorTableState extends State<ColorTable> {
       ),
       child: SizedBox.shrink(
         child: Container(
-          margin: const EdgeInsets.all(5),
-          width: 20,
-          height: 20,
+          margin: const EdgeInsets.all(4),
           decoration: BoxDecoration(
             color: color.color,
             borderRadius: BorderRadius.circular(20),

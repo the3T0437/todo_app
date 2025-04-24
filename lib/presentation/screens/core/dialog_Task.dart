@@ -36,6 +36,9 @@ class _DialogTaskState extends State<DialogTask> {
   ColorTable? colorTable;
   DateTime? deadLine = null;
 
+  final titleFocusNode = FocusNode();
+  final descriptionFocusNode = FocusNode();
+
   @override
   void initState() {
     super.initState();
@@ -60,109 +63,37 @@ class _DialogTaskState extends State<DialogTask> {
   @override
   Widget build(BuildContext context) {
     final key = GlobalKey<FormState>();
-    var isVisiblityDeadline = deadLine != null;
-    var deadLineStr = "";
-    if (deadLine != null) {
-      var deadline = deadLine!;
-      deadLineStr =
-          "${deadline.day.toString().padLeft(2, '0')}/${deadline.month.toString().padLeft(2, '0')}/${deadline.year}";
-    } else
-      deadLineStr = "pick deadline";
 
     var children = [
-      TextFormField(
-        controller: titleControler,
-        decoration: InputDecoration(
-          border: OutlineInputBorder(),
-          labelText: "title",
-        ),
-        validator: (value) {
-          if (value == null || value!.isEmpty) return "title can't be null";
-          return null;
-        },
-      ),
-
+      title(),
       SizedBox(height: 10),
-      TextFormField(
-        controller: descriptionController,
-        decoration: InputDecoration(
-          border: OutlineInputBorder(),
-          labelText: "description",
-        ),
-        maxLines: 5,
-        minLines: 1,
+      inputTitle(),
+      SizedBox(height: 10),
+      inputDescription(),
+      SizedBox(height: 10),
+      Row(
+        children: [dropdownStatus(), SizedBox(width: 10), dropdownPriority()],
       ),
       SizedBox(height: 10),
-      DropdownMenuTaskStatus(
-        (taskStatus) => setState(() {
-          status = taskStatus;
-        }),
-        status,
+      Text(
+        "Color",
+        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
       ),
-      SizedBox(height: 10),
-      DropdownMenuTaskPriority(
-        (priority) => setState(() {
-          this.priority = priority;
-        }),
-        priority,
-      ),
-      SizedBox(height: 10),
-      Text("Color"),
       colorTable!,
       SizedBox(height: 10),
-      ElevatedButton.icon(
-        onPressed: () async {
-          var pickDate = await showDatePicker(
-            context: context,
-            firstDate: DateTime(2000),
-            lastDate: DateTime(2050),
-            initialDate: deadLine ?? DateTime.now(),
-          );
-
-          setState(() => deadLine = pickDate);
-        },
-        icon: Icon(Icons.calendar_today),
-        label: Text(deadLineStr),
-      ),
-      SizedBox(height: 10),
-      ElevatedButton(
-        onPressed: () {
-          if (key.currentState!.validate()) {
-            if (widget.task != null) {
-              widget.task!.title = titleControler.text;
-              widget.task!.description = descriptionController.text;
-              widget.task!.priority = priority;
-              widget.task!.status = status;
-              widget.task!.color = colorTable!.color.color;
-              widget.task!.colorName = colorTable!.color.name;
-              widget.task!.deadLineDate = deadLine;
-              widget.task!.editedDate = DateTime.now();
-
-              widget.onSubmit(widget.task!);
-            } else {
-              var newTask = Task(
-                title: titleControler.text,
-                description: descriptionController.text,
-                priority: priority,
-                status: status,
-                color: colorTable!.color.color,
-                colorName: colorTable!.color.name,
-                deadLineDate: deadLine,
-                createDate: DateTime.now(),
-                editedDate: DateTime.now(),
-              );
-
-              widget.onSubmit(newTask);
-            }
-
-            Navigator.of(context).pop();
-          }
-        },
-        child: Text(widget.submitButtonText),
+      Row(
+        children: [
+          dateTimePicker(),
+          SizedBox(width: 10),
+          Expanded(child: buttonSubmit(key)),
+        ],
       ),
     ];
 
     return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+      ),
       backgroundColor: Colors.white,
       child: Form(
         key: key,
@@ -178,25 +109,161 @@ class _DialogTaskState extends State<DialogTask> {
     );
   }
 
-  // Widget dropdownMenuTaskPriority() {
-  //   return DropdownButton<TaskPriority>(
-  //     value: priority,
-  //     onChanged: (newValue) {
-  //       if (newValue == null) return;
-  //       setState(() => priority = newValue);
-  //     },
-  //     items: taskPriorityMenuItems,
-  //   );
-  // }
+  Widget title() {
+    return Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            color: Color.fromARGB(255, 160, 151, 141),
+            width: 0.5,
+          ),
+        ),
+      ),
+      child: Center(
+        child: Text(
+          widget.task != null ? "Update Task" : "Add New Task",
+          style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+        ),
+      ),
+    );
+  }
 
-  // Widget dropdownMenuTaskStatus() {
-  //   return DropdownButton<TaskStatus>(
-  //     value: status,
-  //     onChanged: (newValue) {
-  //       if (newValue == null) return;
-  //       setState(() => status = newValue);
-  //     },
-  //     items: taskStatusMenuItems,
-  //   );
-  // }
+  Widget inputTitle() {
+    return TextFormField(
+      focusNode: titleFocusNode,
+      controller: titleControler,
+      decoration: InputDecoration(
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+        hintText: "Task Title",
+        hintStyle: TextStyle(fontSize: 12, color: Colors.grey),
+      ),
+      textCapitalization: TextCapitalization.words,
+      style: TextStyle(fontSize: 20),
+      validator: (value) {
+        if (value == null || value!.isEmpty) return "title can't be null";
+        return null;
+      },
+    );
+  }
+
+  Widget inputDescription() {
+    return TextFormField(
+      focusNode: descriptionFocusNode,
+      controller: descriptionController,
+      decoration: InputDecoration(
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+        hintText: "Describe your task",
+        hintStyle: TextStyle(fontSize: 12, color: Colors.grey),
+      ),
+      maxLines: 3,
+      minLines: 1,
+      textCapitalization: TextCapitalization.sentences,
+    );
+  }
+
+  Widget dropdownStatus() {
+    return DropdownMenuTaskStatus(
+      onSelected: (taskStatus) {
+        setState(() {
+          status = taskStatus;
+        });
+      },
+      initStatus: status,
+      onOpened: () {
+        FocusManager.instance.primaryFocus?.unfocus();
+      },
+    );
+  }
+
+  Widget dropdownPriority() {
+    return DropdownMenuTaskPriority(
+      onSelected:
+          (priority) => setState(() {
+            this.priority = priority;
+          }),
+      initPriority: priority,
+      onOpened: () {
+        FocusManager.instance.primaryFocus?.unfocus();
+      },
+    );
+  }
+
+  Widget dateTimePicker() {
+    String deadLineStr = getDeadlineStr();
+    return ElevatedButton.icon(
+      style: ElevatedButton.styleFrom(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(8)),
+        ),
+      ),
+      onPressed: () async {
+        var pickDate = await showDatePicker(
+          context: context,
+          firstDate: DateTime(2000),
+          lastDate: DateTime(2050),
+          initialDate: deadLine ?? DateTime.now(),
+        );
+
+        setState(() => deadLine = pickDate);
+      },
+      icon: Icon(Icons.calendar_today, size: 25),
+      label: Text(deadLineStr),
+    );
+  }
+
+  Widget buttonSubmit(GlobalKey<FormState> key) {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(8)),
+        ),
+      ),
+      onPressed: () {
+        if (key.currentState!.validate()) {
+          if (widget.task != null) {
+            widget.task!.title = titleControler.text;
+            widget.task!.description = descriptionController.text;
+            widget.task!.priority = priority;
+            widget.task!.status = status;
+            widget.task!.color = colorTable!.color.color;
+            widget.task!.colorName = colorTable!.color.name;
+            widget.task!.deadLineDate = deadLine;
+            widget.task!.editedDate = DateTime.now();
+
+            widget.onSubmit(widget.task!);
+          } else {
+            var newTask = Task(
+              title: titleControler.text,
+              description: descriptionController.text,
+              priority: priority,
+              status: status,
+              color: colorTable!.color.color,
+              colorName: colorTable!.color.name,
+              deadLineDate: deadLine,
+              createDate: DateTime.now(),
+              editedDate: DateTime.now(),
+            );
+
+            widget.onSubmit(newTask);
+          }
+
+          Navigator.of(context).pop();
+        }
+      },
+      child: Text(widget.submitButtonText),
+    );
+  }
+
+  String getDeadlineStr() {
+    var isVisiblityDeadline = deadLine != null;
+    var deadLineStr = "";
+    if (deadLine != null) {
+      var deadline = deadLine!;
+      deadLineStr =
+          "${deadline.day.toString().padLeft(2, '0')}/${deadline.month.toString().padLeft(2, '0')}";
+    } else
+      deadLineStr = "Deadline";
+    return deadLineStr;
+  }
 }

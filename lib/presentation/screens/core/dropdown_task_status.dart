@@ -19,12 +19,27 @@ final taskStatusName = {
   TaskStatus.compeletely: "Completed",
 };
 
-Widget DropdownMenuTaskStatus(
-  void Function(TaskStatus) onSelected,
-  TaskStatus initStatus,
-) {
+final taskStatusColors = {
+  TaskStatus.newTask: Colors.green,
+  TaskStatus.processing: Colors.blue,
+  TaskStatus.compeletely: Colors.yellow,
+};
+
+final taskStatusTextColors = {
+  TaskStatus.newTask: Colors.white,
+  TaskStatus.processing: Colors.white,
+  TaskStatus.compeletely: Colors.black,
+};
+
+Widget DropdownMenuTaskStatus({
+  required void Function(TaskStatus) onSelected,
+  void Function()? onOpened,
+  required TaskStatus initStatus,
+}) {
   return PopupMenuButton<TaskStatus>(
     onSelected: onSelected,
+    onOpened: onOpened,
+    color: Colors.white,
     itemBuilder:
         (context) => [
           PopupMenuItem<TaskStatus>(
@@ -42,13 +57,16 @@ Widget DropdownMenuTaskStatus(
         ],
     child: Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        color: const Color.fromARGB(150, 59, 63, 65),
+        borderRadius: BorderRadius.circular(8),
+        color: taskStatusColors[initStatus] ?? Color.fromARGB(150, 59, 63, 65),
       ),
       padding: EdgeInsets.all(10),
       child: Text(
         taskStatusName[initStatus] ?? "Unknown",
-        style: TextStyle(color: Colors.white),
+        style: TextStyle(
+          color: taskStatusTextColors[initStatus] ?? Colors.white,
+          fontWeight: FontWeight.bold,
+        ),
       ),
     ),
   );
