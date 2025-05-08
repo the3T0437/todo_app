@@ -7,6 +7,13 @@ import 'package:todoapp/presentation/widgets/dialog_delete.dart';
 import 'package:todoapp/presentation/widgets/dropdown_task_priority.dart';
 import 'package:todoapp/presentation/widgets/dropdown_task_status.dart';
 
+/// A widget that displays a card for a task with a long press to delete and a tap to toggle the description visibility.
+///
+/// This widget is responsible for rendering a card for a task with a long press to delete and a tap to toggle the description visibility.
+/// It uses BLoC pattern for state management and updates the UI based on the current [TaskState].
+///
+/// The widget takes a [task] parameter to display the task details.
+
 class CardTask extends StatefulWidget {
   const CardTask({super.key, required this.task});
   final Task task;

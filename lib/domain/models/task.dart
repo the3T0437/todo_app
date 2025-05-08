@@ -15,6 +15,26 @@ extension TaskPriorityToJson on TaskPriority {
   String get toJson => name;
 }
 
+/// A model class representing a task in the application.
+///
+/// This class encapsulates all the properties and behaviors of a task,
+/// including its title, description, status, priority, and various dates.
+/// It provides methods for serialization and deserialization of task data.
+///
+/// Properties:
+/// * [title] - The title of the task
+/// * [description] - A detailed description of the task
+/// * [status] - Current status of the task (new, processing, completed)
+/// * [priority] - Priority level of the task (low, medium, high)
+/// * [color] - Visual color representation of the task
+/// * [colorName] - Name of the color for display purposes
+/// * [createDate] - When the task was created
+/// * [deadLineDate] - When the task is due
+/// * [editedDate] - When the task was last modified
+///
+/// The class includes methods for converting to and from JSON format
+/// for data persistence and transfer.
+
 class Task {
   String title;
   String description;

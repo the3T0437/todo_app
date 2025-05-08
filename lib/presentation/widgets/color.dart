@@ -13,6 +13,15 @@ enum ColorLabel {
   final Color color;
 }
 
+/// A widget that displays a color picker table.
+///
+/// This widget allows users to select from predefined colors defined in [ColorLabel].
+/// It displays a row of color options that can be tapped to select a color.
+/// The selected color is highlighted with a background indicator.
+///
+/// The widget takes an optional [color] parameter to set the initial selected color.
+/// If no color is provided, it defaults to [ColorLabel.blue].
+
 class ColorTable extends StatefulWidget {
   ColorLabel color = ColorLabel.blue;
 

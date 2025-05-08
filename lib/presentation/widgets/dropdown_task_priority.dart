@@ -40,6 +40,20 @@ final taskPriorityName = {
   TaskPriority.high: "High",
 };
 
+/// A widget that displays a dropdown menu for task priority selection.
+///
+/// This widget creates a popup menu button that allows users to select task priorities
+/// (Low, Medium, High). The selected priority is displayed in a container with
+/// corresponding color coding and text styling.
+///
+/// The widget takes the following parameters:
+/// * [onSelected] - Callback function called when a priority is selected
+/// * [initPriority] - Initial priority value to display
+/// * [onOpened] - Optional callback function called when the menu is opened
+///
+/// The widget uses predefined color schemes and text styles from [taskPriorityColors]
+/// and [taskPriorityNameColors] to maintain consistent visual representation.
+
 Widget dropdownMenuTaskPriority({
   required void Function(TaskPriority) onSelected,
   required TaskPriority initPriority,

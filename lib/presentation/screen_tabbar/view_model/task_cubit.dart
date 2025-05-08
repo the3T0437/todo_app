@@ -3,6 +3,13 @@ import 'package:todoapp/data/repository/task_repository.dart';
 import 'package:todoapp/domain/models/task.dart';
 import 'package:todoapp/presentation/screen_tabbar/view_model/task_state.dart';
 
+/// A BLoC class for managing the task list and search functionality.
+///
+/// This class is responsible for managing the task list and search functionality.
+/// It uses BLoC pattern for state management and updates the UI based on the current [TaskState].
+///
+/// The widget takes a [repository] parameter to display the task details.
+
 class TaskCubit extends Cubit<TaskState> {
   TaskRepository repository;
 

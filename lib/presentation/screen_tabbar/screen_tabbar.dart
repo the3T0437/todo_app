@@ -8,6 +8,13 @@ import 'package:todoapp/presentation/screen_tabbar/view_model/task_cubit.dart';
 import 'package:todoapp/presentation/widgets/dialog_task.dart';
 import 'package:todoapp/presentation/screen_tabbar/widgets/list_tasks.dart';
 
+/// A widget that displays a tab bar with three tabs for new, processing, and completed tasks.
+///
+/// This widget is responsible for rendering a tab bar with three tabs for new, processing, and completed tasks.
+/// It uses BLoC pattern for state management and updates the UI based on the current [TaskState].
+///
+/// The widget takes a [repository] parameter to display the task details.
+
 class ScreenTabbar extends StatefulWidget {
   TaskRepository repository;
   ScreenTabbar({super.key, required this.repository});

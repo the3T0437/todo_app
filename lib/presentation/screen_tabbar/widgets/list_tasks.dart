@@ -7,15 +7,24 @@ import "package:todoapp/presentation/screen_tabbar/view_model/task_cubit.dart";
 import "package:todoapp/presentation/screen_tabbar/view_model/task_state.dart";
 import "package:todoapp/presentation/screen_tabbar/widgets/card_task.dart";
 
+/// A widget that displays a list of tasks with search functionality.
+///
+/// This widget is responsible for rendering a scrollable list of task cards
+/// and includes a search bar for filtering tasks. It uses BLoC pattern for
+/// state management and updates the UI based on the current [TaskState].
+///
+/// The widget takes a [displayTasks] function that determines which tasks to show
+/// based on the current state, and a [searchController] for managing search input.
+
 class ListTasks extends StatefulWidget {
   final List<Task> Function(TaskState) displayTasks;
+  final TextEditingController searchController;
 
   ListTasks({
     super.key,
     required this.displayTasks,
     required this.searchController,
   });
-  final TextEditingController searchController;
 
   @override
   State<ListTasks> createState() => _ListTasksState();

@@ -1,7 +1,6 @@
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:todoapp/domain/models/task.dart';
@@ -10,6 +9,17 @@ import 'package:todoapp/presentation/screen_tabbar/view_model/task_state.dart';
 import 'package:todoapp/presentation/widgets/color.dart';
 import 'package:todoapp/presentation/widgets/dropdown_task_priority.dart';
 import 'package:todoapp/presentation/widgets/dropdown_task_status.dart';
+
+/// A dialog widget for creating or editing tasks.
+///
+/// This widget displays a dialog with form fields for task details including title,
+/// description, priority, status, color, and deadline. It can be used for both
+/// creating new tasks and editing existing ones.
+///
+/// The widget takes the following parameters:
+/// * [task] - Optional existing task to edit. If null, creates a new task
+/// * [onSubmit] - Callback function called when the form is submitted
+/// * [submitButtonText] - Text to display on the submit button
 
 class DialogTask extends StatefulWidget {
   final Task? task;
