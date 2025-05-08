@@ -1,7 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todoapp/data/repository/task_repository.dart';
 import 'package:todoapp/domain/models/task.dart';
-import 'package:todoapp/presentation/bloc/task_state.dart';
+import 'package:todoapp/presentation/screen_tabbar/view_model/task_state.dart';
 
 class TaskCubit extends Cubit<TaskState> {
   TaskRepository repository;

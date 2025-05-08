@@ -1,21 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
-/*
- 	Title 											bắt buộc
-	description
-	status(Mới, đang xử lý, hoàn tất)
-	priority(Độ ưu tiên)
-	color(Màu nền của task đó)
-	createDate										ngày tạo hiện tại 
-	deadlineDate
-	editedDate(Ngày sửa đối cuối cùng),...). 
-
- */
-
 import 'package:flutter/material.dart';
 
-enum TaskStatus { newTask, processing, compeletely }
+enum TaskStatus { newTask, processing, completed }
 
 extension TaskStatusToJson on TaskStatus {
   String get toJson => name;
@@ -79,6 +67,7 @@ class Task {
           map['status'] != null
               ? TaskStatus.values.firstWhere(
                 (value) => value.name == map['status'],
+                orElse: () => TaskStatus.newTask,
               )
               : TaskStatus.newTask,
       priority:

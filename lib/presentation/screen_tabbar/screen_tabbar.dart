@@ -4,22 +4,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todoapp/data/repository/task_repository.dart';
-import 'package:todoapp/presentation/bloc/task_cubit.dart';
-import 'package:todoapp/presentation/screens/core/dialog_Task.dart';
-import 'package:todoapp/presentation/screens/taskScreen.dart';
+import 'package:todoapp/presentation/screen_tabbar/view_model/task_cubit.dart';
+import 'package:todoapp/presentation/widgets/dialog_task.dart';
+import 'package:todoapp/presentation/screen_tabbar/widgets/list_tasks.dart';
 
-class TabbarScreen extends StatefulWidget {
+class ScreenTabbar extends StatefulWidget {
   TaskRepository repository;
-  TabbarScreen({super.key, required this.repository});
+  ScreenTabbar({super.key, required this.repository});
 
   @override
   State<StatefulWidget> createState() =>
-      _TabbarScreenState(repository: repository);
+      _ScreenTabbarState(repository: repository);
 }
 
-class _TabbarScreenState extends State<TabbarScreen> {
+class _ScreenTabbarState extends State<ScreenTabbar> {
   TaskRepository repository;
-  _TabbarScreenState({required this.repository});
+  _ScreenTabbarState({required this.repository});
 
   late TabController _tabController;
   @override
@@ -68,19 +68,19 @@ class TabbarBody extends StatelessWidget {
         body: TabBarView(
           children: <Widget>[
             Center(
-              child: TaskScreen(
+              child: ListTasks(
                 displayTasks: (taskState) => taskState.newTasks,
                 searchController: searchController,
               ),
             ),
             Center(
-              child: TaskScreen(
+              child: ListTasks(
                 displayTasks: (taskState) => taskState.processingTasks,
                 searchController: searchController,
               ),
             ),
             Center(
-              child: TaskScreen(
+              child: ListTasks(
                 displayTasks: (taskState) => taskState.completely,
                 searchController: searchController,
               ),

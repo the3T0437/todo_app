@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:todoapp/domain/models/task.dart';
-import 'package:todoapp/presentation/bloc/task_cubit.dart';
+import 'package:todoapp/presentation/screen_tabbar/view_model/task_cubit.dart';
 
 final taskStatusMenuItems =
     TaskStatus.values.map((status) {
@@ -16,22 +16,22 @@ final taskStatusMenuItems =
 final taskStatusName = {
   TaskStatus.newTask: "New",
   TaskStatus.processing: "Processing",
-  TaskStatus.compeletely: "Completed",
+  TaskStatus.completed: "Completed",
 };
 
 final taskStatusColors = {
   TaskStatus.newTask: Colors.green,
   TaskStatus.processing: Colors.blue,
-  TaskStatus.compeletely: Colors.yellow,
+  TaskStatus.completed: Colors.yellow,
 };
 
 final taskStatusTextColors = {
   TaskStatus.newTask: Colors.white,
   TaskStatus.processing: Colors.white,
-  TaskStatus.compeletely: Colors.black,
+  TaskStatus.completed: Colors.black,
 };
 
-Widget DropdownMenuTaskStatus({
+Widget dropdownMenuTaskStatus({
   required void Function(TaskStatus) onSelected,
   void Function()? onOpened,
   required TaskStatus initStatus,
@@ -51,7 +51,7 @@ Widget DropdownMenuTaskStatus({
             child: Text('Processing'),
           ),
           PopupMenuItem<TaskStatus>(
-            value: TaskStatus.compeletely,
+            value: TaskStatus.completed,
             child: Text('Completed'),
           ),
         ],

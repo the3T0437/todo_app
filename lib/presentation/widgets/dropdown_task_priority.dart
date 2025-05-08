@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todoapp/domain/models/task.dart';
-import 'package:todoapp/presentation/bloc/task_cubit.dart';
-import 'package:todoapp/presentation/bloc/task_state.dart';
+import 'package:todoapp/presentation/screen_tabbar/view_model/task_cubit.dart';
+import 'package:todoapp/presentation/screen_tabbar/view_model/task_state.dart';
 
 final taskPriorityMenuItems =
     TaskPriority.values.map((status) {
@@ -18,7 +18,7 @@ final taskPriorityMenuItems =
 //   TaskPriority.high: Color.fromARGB(255, 255, 0, 0),
 // }
 
-final TaskPriorityColors = {
+final taskPriorityColors = {
   TaskPriority.low: const Color.fromRGBO(64, 196, 255, 1),
   //TaskPriority.low: const Color.fromRGBO(33, 150, 243, 1),
   TaskPriority.medium: Color.fromARGB(255, 255, 193, 108),
@@ -26,7 +26,7 @@ final TaskPriorityColors = {
   TaskPriority.high: const Color.fromRGBO(255, 64, 129, 1),
 };
 
-final TaskPriorityNameColors = {
+final taskPriorityNameColors = {
   TaskPriority.low: Colors.black,
   //TaskPriority.low: const Color.fromRGBO(33, 150, 243, 1),
   TaskPriority.medium: Colors.black,
@@ -40,7 +40,7 @@ final taskPriorityName = {
   TaskPriority.high: "High",
 };
 
-Widget DropdownMenuTaskPriority({
+Widget dropdownMenuTaskPriority({
   required void Function(TaskPriority) onSelected,
   required TaskPriority initPriority,
   void Function()? onOpened,
@@ -75,7 +75,7 @@ Widget DropdownMenuTaskPriority({
         //   width: 1,
         // ),
         color:
-            TaskPriorityColors[initPriority] ?? Color.fromARGB(150, 59, 63, 65),
+            taskPriorityColors[initPriority] ?? Color.fromARGB(150, 59, 63, 65),
       ),
       alignment: Alignment.center,
       padding: EdgeInsets.all(10),
@@ -83,7 +83,7 @@ Widget DropdownMenuTaskPriority({
         taskPriorityName[initPriority] ?? "Unknown",
         style: TextStyle(
           color:
-              TaskPriorityNameColors[initPriority] ??
+              taskPriorityNameColors[initPriority] ??
               Color.fromARGB(150, 59, 63, 65),
           fontWeight: FontWeight.bold,
         ),

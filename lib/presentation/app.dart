@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:todoapp/data/local_storeage/local_task_storeage.dart';
-import 'package:todoapp/data/local_storeage/task_storeage.dart';
+import 'package:todoapp/data/local_store/local_task_store.dart';
+import 'package:todoapp/data/local_store/task_store.dart';
 import 'package:todoapp/data/repository/task_repository.dart';
-import 'package:todoapp/presentation/bloc/task_cubit.dart';
-import 'package:todoapp/presentation/bloc/task_state.dart';
-import 'package:todoapp/presentation/screens/tabbarScreen.dart';
-import 'package:todoapp/presentation/screens/taskScreen.dart';
-import 'package:todoapp/presentation/screens/testScreen.dart';
+import 'package:todoapp/presentation/screen_tabbar/view_model/task_cubit.dart';
+import 'package:todoapp/presentation/screen_tabbar/view_model/task_state.dart';
+import 'package:todoapp/presentation/screen_tabbar/screen_tabbar.dart';
+import 'package:todoapp/presentation/screen_tabbar/widgets/list_tasks.dart';
 
 class MyApp extends StatelessWidget {
   final TaskRepository repository;
@@ -52,13 +51,13 @@ class MyApp extends StatelessWidget {
         providers: [
           BlocProvider(
             create: (context) {
-              var state = TaskCubit(repository);
-              state.getTasks();
-              return state;
+              var cubit = TaskCubit(repository);
+              cubit.getTasks();
+              return cubit;
             },
           ),
         ],
-        child: TabbarScreen(repository: repository),
+        child: ScreenTabbar(repository: repository),
         //child: const TestScreen(),
       ),
       /*

@@ -3,14 +3,14 @@ import "dart:collection";
 import "package:flutter/material.dart";
 import "package:flutter_bloc/flutter_bloc.dart";
 import "package:todoapp/domain/models/task.dart";
-import "package:todoapp/presentation/bloc/task_cubit.dart";
-import "package:todoapp/presentation/bloc/task_state.dart";
-import "package:todoapp/presentation/screens/core/TaskCard.dart";
+import "package:todoapp/presentation/screen_tabbar/view_model/task_cubit.dart";
+import "package:todoapp/presentation/screen_tabbar/view_model/task_state.dart";
+import "package:todoapp/presentation/screen_tabbar/widgets/card_task.dart";
 
-class TaskScreen extends StatefulWidget {
+class ListTasks extends StatefulWidget {
   final List<Task> Function(TaskState) displayTasks;
 
-  TaskScreen({
+  ListTasks({
     super.key,
     required this.displayTasks,
     required this.searchController,
@@ -18,12 +18,11 @@ class TaskScreen extends StatefulWidget {
   final TextEditingController searchController;
 
   @override
-  State<TaskScreen> createState() => _TaskScreenState();
+  State<ListTasks> createState() => _ListTasksState();
 }
 
-class _TaskScreenState extends State<TaskScreen> {
+class _ListTasksState extends State<ListTasks> {
   final FocusNode searchFocus = FocusNode();
-
   ScrollController scrollController = ScrollController();
 
   @override
@@ -59,7 +58,7 @@ class _TaskScreenState extends State<TaskScreen> {
     List<Widget> taskCards = [];
     var tasks = widget.displayTasks(state);
     for (Task task in tasks) {
-      taskCards.add(TaskCard(task: task));
+      taskCards.add(CardTask(task: task));
     }
 
     taskCards.insert(0, searchBar);
@@ -69,7 +68,7 @@ class _TaskScreenState extends State<TaskScreen> {
   }
 
   Widget _getSearchBar(BuildContext context) {
-    var searchBar = Padding(
+    return Padding(
       padding: EdgeInsets.only(left: 16, right: 16, top: 5, bottom: 10),
       child: SearchBar(
         onTapOutside: (event) => searchFocus.unfocus(),
@@ -102,6 +101,5 @@ class _TaskScreenState extends State<TaskScreen> {
             ),
       ),
     );
-    return searchBar;
   }
 }

@@ -5,11 +5,11 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:todoapp/domain/models/task.dart';
-import 'package:todoapp/presentation/bloc/task_cubit.dart';
-import 'package:todoapp/presentation/bloc/task_state.dart';
-import 'package:todoapp/presentation/screens/core/color.dart';
-import 'package:todoapp/presentation/screens/core/dropdown_task_priority.dart';
-import 'package:todoapp/presentation/screens/core/dropdown_task_status.dart';
+import 'package:todoapp/presentation/screen_tabbar/view_model/task_cubit.dart';
+import 'package:todoapp/presentation/screen_tabbar/view_model/task_state.dart';
+import 'package:todoapp/presentation/widgets/color.dart';
+import 'package:todoapp/presentation/widgets/dropdown_task_priority.dart';
+import 'package:todoapp/presentation/widgets/dropdown_task_status.dart';
 
 class DialogTask extends StatefulWidget {
   final Task? task;
@@ -29,7 +29,7 @@ class DialogTask extends StatefulWidget {
 }
 
 class _DialogTaskState extends State<DialogTask> {
-  var titleControler = TextEditingController();
+  var titleController = TextEditingController();
   var descriptionController = TextEditingController();
   var priority = TaskPriority.low;
   var status = TaskStatus.newTask;
@@ -44,7 +44,7 @@ class _DialogTaskState extends State<DialogTask> {
     super.initState();
 
     if (widget.task != null) {
-      titleControler.text = widget.task!.title;
+      titleController.text = widget.task!.title;
       descriptionController.text = widget.task!.description;
       priority = widget.task!.priority;
       status = widget.task!.status;
@@ -133,7 +133,7 @@ class _DialogTaskState extends State<DialogTask> {
     return TextFormField(
       onTapOutside: (event) => titleFocusNode.unfocus(),
       focusNode: titleFocusNode,
-      controller: titleControler,
+      controller: titleController,
       decoration: InputDecoration(
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
         hintText: "Task Title",
@@ -164,7 +164,7 @@ class _DialogTaskState extends State<DialogTask> {
   }
 
   Widget dropdownStatus() {
-    return DropdownMenuTaskStatus(
+    return dropdownMenuTaskStatus(
       onSelected: (taskStatus) {
         setState(() {
           status = taskStatus;
@@ -175,7 +175,7 @@ class _DialogTaskState extends State<DialogTask> {
   }
 
   Widget dropdownPriority() {
-    return DropdownMenuTaskPriority(
+    return dropdownMenuTaskPriority(
       onSelected:
           (priority) => setState(() {
             this.priority = priority;
@@ -217,7 +217,7 @@ class _DialogTaskState extends State<DialogTask> {
       onPressed: () {
         if (key.currentState!.validate()) {
           if (widget.task != null) {
-            widget.task!.title = titleControler.text;
+            widget.task!.title = titleController.text;
             widget.task!.description = descriptionController.text;
             widget.task!.priority = priority;
             widget.task!.status = status;
@@ -229,7 +229,7 @@ class _DialogTaskState extends State<DialogTask> {
             widget.onSubmit(widget.task!);
           } else {
             var newTask = Task(
-              title: titleControler.text,
+              title: titleController.text,
               description: descriptionController.text,
               priority: priority,
               status: status,

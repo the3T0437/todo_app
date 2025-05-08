@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todoapp/domain/models/task.dart';
-import 'package:todoapp/presentation/bloc/task_cubit.dart';
-import 'package:todoapp/presentation/screens/core/dialog_Task.dart';
-import 'package:todoapp/presentation/screens/core/dialog_delete.dart';
-import 'package:todoapp/presentation/screens/core/dropdown_task_priority.dart';
-import 'package:todoapp/presentation/screens/core/dropdown_task_status.dart';
+import 'package:todoapp/presentation/screen_tabbar/view_model/task_cubit.dart';
+import 'package:todoapp/presentation/widgets/dialog_task.dart';
+import 'package:todoapp/presentation/widgets/dialog_delete.dart';
+import 'package:todoapp/presentation/widgets/dropdown_task_priority.dart';
+import 'package:todoapp/presentation/widgets/dropdown_task_status.dart';
 
-class TaskCard extends StatefulWidget {
-  const TaskCard({super.key, required this.task});
+class CardTask extends StatefulWidget {
+  const CardTask({super.key, required this.task});
   final Task task;
 
   @override
-  State<StatefulWidget> createState() => _TaskCardState();
+  State<StatefulWidget> createState() => _CardTaskState();
 }
 
-class _TaskCardState extends State<TaskCard> {
+class _CardTaskState extends State<CardTask> {
   bool isShowDesc = false;
 
   @override
@@ -186,7 +186,7 @@ class _TaskCardState extends State<TaskCard> {
 
     return Row(
       children: [
-        DropdownMenuTaskStatus(
+        dropdownMenuTaskStatus(
           onSelected: (TaskStatus status) {
             widget.task.status = status;
             context.read<TaskCubit>().writeTasks();

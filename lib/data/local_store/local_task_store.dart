@@ -2,10 +2,10 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:path_provider/path_provider.dart';
-import 'package:todoapp/data/local_storeage/task_storeage.dart';
+import 'package:todoapp/data/local_store/task_store.dart';
 import 'package:todoapp/domain/models/task.dart';
 
-class LocalTaskStoreage extends TaskStoreage {
+class LocalTaskStore extends TaskStore {
   @override
   Future<void> writeTasks(List<Task> tasks) async {
     var file = await _localFileTasks;

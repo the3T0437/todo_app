@@ -2,7 +2,7 @@
 import 'dart:io';
 
 import 'package:flutter/widgets.dart';
-import 'package:todoapp/data/local_storeage/task_storeage.dart';
+import 'package:todoapp/data/local_store/task_store.dart';
 import 'package:todoapp/domain/models/task.dart';
 
 abstract class TaskRepository {
@@ -13,7 +13,7 @@ abstract class TaskRepository {
 }
 
 class TaskRepositoryImp implements TaskRepository {
-  TaskStoreage store;
+  TaskStore store;
 
   TaskRepositoryImp({required this.store});
 

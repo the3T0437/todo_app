@@ -48,7 +48,7 @@ class TaskState {
   List<Task> get completely {
     searchStr = searchStr?.toLowerCase();
     var newTasks =
-        tasks.where((task) => task.status == TaskStatus.compeletely).toList();
+        tasks.where((task) => task.status == TaskStatus.completed).toList();
 
     var searchTasks =
         newTasks
