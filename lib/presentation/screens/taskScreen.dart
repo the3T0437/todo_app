@@ -34,7 +34,7 @@ class _TaskScreenState extends State<TaskScreen> {
   Widget body() {
     return BlocBuilder<TaskCubit, TaskState>(
       builder: (context, state) {
-        List<Widget> taskCards = getWidgetsInScreen(state, context);
+        List<Widget> taskCards = _getWidgetsInScreen(state, context);
 
         return Column(
           children: [
@@ -53,8 +53,8 @@ class _TaskScreenState extends State<TaskScreen> {
     );
   }
 
-  List<Widget> getWidgetsInScreen(TaskState state, BuildContext context) {
-    Widget searchBar = getSearchBar(context);
+  List<Widget> _getWidgetsInScreen(TaskState state, BuildContext context) {
+    Widget searchBar = _getSearchBar(context);
 
     List<Widget> taskCards = [];
     var tasks = widget.displayTasks(state);
@@ -63,15 +63,16 @@ class _TaskScreenState extends State<TaskScreen> {
     }
 
     taskCards.insert(0, searchBar);
+    taskCards.add(SizedBox(height: 80));
 
     return taskCards;
   }
 
-  Widget getSearchBar(BuildContext context) {
+  Widget _getSearchBar(BuildContext context) {
     var searchBar = Padding(
-      //padding: EdgeInsets.only(left: 24, right: 24, top: 16),
-      padding: EdgeInsets.only(left: 24, right: 24, top: 5, bottom: 10),
+      padding: EdgeInsets.only(left: 16, right: 16, top: 5, bottom: 10),
       child: SearchBar(
+        onTapOutside: (event) => searchFocus.unfocus(),
         focusNode: searchFocus,
         elevation: WidgetStateProperty.fromMap({
           WidgetState.focused: 3,

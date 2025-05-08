@@ -20,8 +20,18 @@ final taskPriorityMenuItems =
 
 final TaskPriorityColors = {
   TaskPriority.low: const Color.fromRGBO(64, 196, 255, 1),
-  TaskPriority.medium: const Color.fromRGBO(255, 215, 64, 1),
+  //TaskPriority.low: const Color.fromRGBO(33, 150, 243, 1),
+  TaskPriority.medium: Color.fromARGB(255, 255, 193, 108),
+  //TaskPriority.medium: Color.fromARGB(255, 255, 235, 59),
   TaskPriority.high: const Color.fromRGBO(255, 64, 129, 1),
+};
+
+final TaskPriorityNameColors = {
+  TaskPriority.low: Colors.black,
+  //TaskPriority.low: const Color.fromRGBO(33, 150, 243, 1),
+  TaskPriority.medium: Colors.black,
+  //TaskPriority.medium: Color.fromARGB(255, 255, 235, 59),
+  TaskPriority.high: Colors.white,
 };
 
 final taskPriorityName = {
@@ -55,15 +65,28 @@ Widget DropdownMenuTaskPriority({
           ),
         ],
     child: Container(
+      width: 60,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
+        // border: Border.all(
+        //   color:
+        //       TaskPriorityColors[initPriority] ??
+        //       Color.fromARGB(150, 59, 63, 65),
+        //   width: 1,
+        // ),
         color:
             TaskPriorityColors[initPriority] ?? Color.fromARGB(150, 59, 63, 65),
       ),
+      alignment: Alignment.center,
       padding: EdgeInsets.all(10),
       child: Text(
         taskPriorityName[initPriority] ?? "Unknown",
-        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        style: TextStyle(
+          color:
+              TaskPriorityNameColors[initPriority] ??
+              Color.fromARGB(150, 59, 63, 65),
+          fontWeight: FontWeight.bold,
+        ),
       ),
     ),
   );

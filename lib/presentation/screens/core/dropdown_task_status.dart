@@ -48,7 +48,7 @@ Widget DropdownMenuTaskStatus({
           ),
           PopupMenuItem<TaskStatus>(
             value: TaskStatus.processing,
-            child: Text('In Process'),
+            child: Text('Processing'),
           ),
           PopupMenuItem<TaskStatus>(
             value: TaskStatus.compeletely,
@@ -58,6 +58,11 @@ Widget DropdownMenuTaskStatus({
     child: Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
+        // border: Border.all(
+        //   color:
+        //       taskStatusColors[initStatus] ?? Color.fromARGB(150, 59, 63, 65),
+        //   style: BorderStyle.solid,
+        // ),
         color: taskStatusColors[initStatus] ?? Color.fromARGB(150, 59, 63, 65),
       ),
       padding: EdgeInsets.all(10),
@@ -67,6 +72,11 @@ Widget DropdownMenuTaskStatus({
           color: taskStatusTextColors[initStatus] ?? Colors.white,
           fontWeight: FontWeight.bold,
         ),
+        // style: TextStyle(
+        //   color:
+        //       taskStatusColors[initStatus] ?? Color.fromARGB(150, 59, 63, 65),
+        //   fontWeight: FontWeight.bold,
+        // ),
       ),
     ),
   );

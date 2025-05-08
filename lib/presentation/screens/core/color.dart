@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 
 enum ColorLabel {
-  pink('Blue', Color.fromRGBO(209, 234, 237, 1)),
-  blue('Pink', Color.fromRGBO(255, 218, 218, 1)),
+  blue('Blue', Color.fromRGBO(209, 234, 237, 1)),
+  pink('Pink', Color.fromRGBO(255, 218, 218, 1)),
   green('Green', Color.fromRGBO(157, 202, 164, 1)),
   yellow('Yellow', Color.fromRGBO(253, 242, 179, 1)),
   grey('Orange', Color.fromRGBO(255, 212, 169, 1));

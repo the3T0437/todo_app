@@ -22,6 +22,7 @@ class _TaskCardState extends State<TaskCard> {
   Widget build(BuildContext context) {
     return GestureDetector(
       child: _getTaskCard(),
+      onLongPress: () => deleteDialog(),
       onTap:
           () => setState(() {
             isShowDesc = !isShowDesc;
@@ -47,54 +48,14 @@ class _TaskCardState extends State<TaskCard> {
         borderRadius: BorderRadius.all(Radius.circular(8)),
       ),
       clipBehavior: Clip.antiAlias,
-      child: IntrinsicHeight(
-        child: Container(
-          padding: EdgeInsets.all(10),
-          color: widget.task.color,
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  Expanded(child: _taskDetail()),
-                  IconButton(
-                    onPressed: () async {
-                      var isDelete = await showDialog(
-                        context: context,
-                        builder:
-                            (context) => AlertDialog(
-                              title: Text("Delete Task"),
-                              content: Text(
-                                "Are you sure you want to delete this task?",
-                              ),
-                              actions: [
-                                TextButton(
-                                  onPressed:
-                                      () => Navigator.of(context).pop(false),
-                                  child: Text("Cancel"),
-                                ),
-                                TextButton(
-                                  onPressed:
-                                      () => Navigator.of(context).pop(true),
-                                  child: Text("Delete"),
-                                ),
-                              ],
-                            ),
-                      );
-
-                      if (isDelete == true) {
-                        context.read<TaskCubit>().removeTask(widget.task);
-                      }
-                    },
-                    icon: Icon(
-                      Icons.delete_outline_outlined,
-                      color: Colors.red,
-                    ),
-                  ),
-                ],
-              ),
-              Row(children: [_deadline(), Spacer(), _taskStatus()]),
-            ],
-          ),
+      child: Container(
+        padding: EdgeInsets.all(10),
+        color: widget.task.color,
+        child: Column(
+          children: [
+            Row(children: [Expanded(child: _taskDetail())]),
+            Row(children: [_deadline(), Spacer(), _taskStatus()]),
+          ],
         ),
       ),
     );
@@ -102,17 +63,64 @@ class _TaskCardState extends State<TaskCard> {
 
   Widget _taskDetail() {
     return Padding(
-      padding: const EdgeInsets.only(left: 10),
+      padding: const EdgeInsets.only(left: 0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
-        children: [_taskTitle(), _description()],
+        children: [
+          Row(children: [Expanded(child: _taskTitle())]),
+          _description(),
+        ],
       ),
     );
   }
 
+  Widget _iconDelete() {
+    return GestureDetector(
+      onTap: () async {
+        await deleteDialog();
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Icon(Icons.delete_outline_outlined, color: Colors.red),
+      ),
+    );
+  }
+
+  Future<void> deleteDialog() async {
+    var isDelete = await showDialog(
+      context: context,
+      builder:
+          (context) => AlertDialog(
+            title: Text("Delete Task"),
+            content: Text("Are you sure you want to delete this task?"),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop(false);
+                },
+                child: Text("Cancel"),
+              ),
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(true),
+                child: Text("Delete"),
+              ),
+            ],
+          ),
+    );
+
+    if (isDelete == true) {
+      context.read<TaskCubit>().removeTask(widget.task);
+    }
+  }
+
   Widget _description() {
-    return Visibility(visible: _isVisibleDesc(), child: _taskDescription());
+    //return Visibility(visible: _isVisibleDesc(), child: _taskDescription());
+    return AnimatedSize(
+      duration: Duration(milliseconds: 300),
+      curve: Curves.bounceInOut,
+      child: _isVisibleDesc() ? _taskDescription() : SizedBox.shrink(),
+    );
   }
 
   Widget _deadline() {
@@ -188,17 +196,17 @@ class _TaskCardState extends State<TaskCard> {
             FocusManager.instance.primaryFocus?.unfocus();
           },
         ),
-        SizedBox(width: 10),
-        DropdownMenuTaskPriority(
-          onSelected: (TaskPriority priority) {
-            widget.task.priority = priority;
-            context.read<TaskCubit>().writeTasks();
-          },
-          initPriority: widget.task.priority,
-          onOpened: () {
-            FocusManager.instance.primaryFocus?.unfocus();
-          },
-        ),
+        // SizedBox(width: 10),
+        // DropdownMenuTaskPriority(
+        //   onSelected: (TaskPriority priority) {
+        //     widget.task.priority = priority;
+        //     context.read<TaskCubit>().writeTasks();
+        //   },
+        //   initPriority: widget.task.priority,
+        //   onOpened: () {
+        //     FocusManager.instance.primaryFocus?.unfocus();
+        //   },
+        // ),
       ],
     );
   }
@@ -210,24 +218,21 @@ class _TaskCardState extends State<TaskCard> {
         borderRadius: BorderRadius.circular(8),
       ),
       padding: EdgeInsets.only(top: 5),
-      child: Padding(
-        padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10, top: 5),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              Icons.calendar_today,
-              size: 25,
-              color: Color.fromARGB(150, 0, 0, 0),
-            ),
-            SizedBox(width: 10),
-            Text(
-              deadLineStr,
-              style: TextStyle(color: Color.fromARGB(150, 0, 0, 0)),
-            ),
-          ],
-        ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            Icons.calendar_today,
+            size: 25,
+            color: Color.fromARGB(150, 0, 0, 0),
+          ),
+          SizedBox(width: 10),
+          Text(
+            deadLineStr,
+            style: TextStyle(color: Color.fromARGB(150, 0, 0, 0)),
+          ),
+        ],
       ),
     );
 

@@ -131,6 +131,7 @@ class _DialogTaskState extends State<DialogTask> {
 
   Widget inputTitle() {
     return TextFormField(
+      onTapOutside: (event) => titleFocusNode.unfocus(),
       focusNode: titleFocusNode,
       controller: titleControler,
       decoration: InputDecoration(
@@ -139,7 +140,6 @@ class _DialogTaskState extends State<DialogTask> {
         hintStyle: TextStyle(fontSize: 12, color: Colors.grey),
       ),
       textCapitalization: TextCapitalization.words,
-      style: TextStyle(fontSize: 20),
       validator: (value) {
         if (value == null || value!.isEmpty) return "title can't be null";
         return null;
@@ -149,6 +149,7 @@ class _DialogTaskState extends State<DialogTask> {
 
   Widget inputDescription() {
     return TextFormField(
+      onTapOutside: (event) => descriptionFocusNode.unfocus(),
       focusNode: descriptionFocusNode,
       controller: descriptionController,
       decoration: InputDecoration(
@@ -170,9 +171,6 @@ class _DialogTaskState extends State<DialogTask> {
         });
       },
       initStatus: status,
-      onOpened: () {
-        FocusManager.instance.primaryFocus?.unfocus();
-      },
     );
   }
 
@@ -183,9 +181,6 @@ class _DialogTaskState extends State<DialogTask> {
             this.priority = priority;
           }),
       initPriority: priority,
-      onOpened: () {
-        FocusManager.instance.primaryFocus?.unfocus();
-      },
     );
   }
 
